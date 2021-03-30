@@ -27,6 +27,8 @@ class Avatar extends StatefulWidget {
 }
 
 class _Avatar extends State<Avatar> with TickerProviderStateMixin {
+
+  
   AnimationController _controller;
   Tween<double> _tween = Tween(begin: 1.25, end: 2);
 
@@ -52,9 +54,13 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
+
+    final _screenSize = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       /*appBar: AppBar(
         title: Center(
           child: Text(""),
@@ -62,6 +68,7 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
         backgroundColor: HexColor("002D3F"),
       ),*/
       body: Container(
+          //height: _screenSize.height - (_screenSize.height /50),
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           color: HexColor("005274"),
@@ -72,6 +79,7 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
               child: DefaultTabController(
                 length: 3,
                 child: Scaffold(
+                  resizeToAvoidBottomInset: false,
                   appBar: PreferredSize(
                       preferredSize: Size.fromHeight(150.0),
                       child: AppBar(
@@ -109,10 +117,17 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
                   body: TabBarView(
                     children: [
                       Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
                         color: HexColor("005274"),
                         child: CustomScrollView(
                         slivers: <Widget>[
-                          SliverGrid.extent(maxCrossAxisExtent: 400, children: [
+                          SliverGrid.extent(
+                            
+                            maxCrossAxisExtent: 500, 
+                            //SliverGrid.count(
+                             // crossAxisCount: 2,
+                            children: [
                             /*Padding(
                                 padding: EdgeInsets.all(10.0),
                                 child: Card(
@@ -145,7 +160,8 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
                                       ),
                               )*/
                             Padding(
-                              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              //padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              padding: EdgeInsets.all(15.0),
                               child: Container(
                               width: MediaQuery.of(context).size.width,
                               //height: 200,
@@ -160,18 +176,24 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
                             //Card(
                             //clipBehavior: Clip.antiAlias,
 
-                            Padding(
+                            /*Padding(
                               padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
-                              child: Column(
+                              child: Stack(
+                                fit: StackFit.expand,
                               children: [
-                                 ListTile(
+                                
+                              ],
+                            ),
+                            ),*/
+
+                             ListTile(
                                   //leading: Icon(Icons.arrow_drop_down_circle),
-                                  title: const Text('Welcome', style: TextStyle(
+                                  title: Padding( padding: EdgeInsets.all(15.0),child: Text('Welcome', style: TextStyle(
                                     decoration: TextDecoration.underline,
                                         color: Colors.white),
-                                  ),
+                                  )),
                                   subtitle: Padding(
-                                    padding: EdgeInsets.all(5.0),child: Text(
+                                    padding: EdgeInsets.all(15.0),child: Text(
                                      "Here we will explore the projects I've developed and the multiple different technologies that were used which are accessible via github and showcased here on pressback.space",
                                     style: TextStyle(
                                         color: Colors.white),
@@ -182,18 +204,84 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
                                     style: TextStyle(
                                         color: Colors.white),
                                   ),*/
-                                ButtonBar(
-                                  alignment: MainAxisAlignment.start,
+                                
+
+                                ListTile(
+                                  //leading: Icon(Icons.arrow_drop_down_circle),
+                                  title: Padding( padding: EdgeInsets.all(15.0),child:Text('Where to begin', style: TextStyle(
+                                    fontSize: 20,
+                                    decoration: TextDecoration.underline,
+                                        color: Colors.white),
+                                  )),
+                                  subtitle: Padding(
+                                    padding: EdgeInsets.all(15.0),
+                                    child:Text(
+                                    "Developing with a range of technologies, which have been fun every step of learning and experiencing the in's and out's of the what I can do through to what the client needs.",
+                                    style: TextStyle(
+                                        color: Colors.white),
+                                  ),),
+                                ),
+
+
+                                ListTile(
+                                  //leading: Icon(Icons.arrow_drop_down_circle),
+                                  title: Padding( padding: EdgeInsets.all(15.0),child:Text('Quick links', style: TextStyle(
+                                    fontSize: 20,
+                                    decoration: TextDecoration.underline,
+                                        color: Colors.white),
+                                  )),
+                                  subtitle: Padding(
+                                    padding: EdgeInsets.all(15.0),
+
+                                    child: ListView(
+                                    children: <Widget>[
+                                      /*ListTile(
+                                        leading: Icon(Icons.map),
+                                        title: Text('Map'),
+                                      ),*/
+                                      ListTile(
+                                              //leading: Icon(Icons.photo_album),
+                                              title: FlatButton(
+                                          child: Text('Linkedin', style: TextStyle(
+                                            decoration: TextDecoration.underline,
+                                            color: Colors.white
+                                          ),),
+                                          onPressed: () {
+                                            js.context.callMethod('open', ['https://www.linkedin.com/in/shannon-setter-63a964a1/']);
+                                          },
+                                        ),
+                                      ),
+                                      ListTile(
+                                              //leading: Icon(Icons.photo_album),
+                                              title: FlatButton(
+                                          child: Text('github', style: TextStyle(
+                                            decoration: TextDecoration.underline,
+                                            color: Colors.white
+                                          ),),
+                                          onPressed: () {
+                                            js.context.callMethod('open', ['https://github.com/planetbridging']);
+                                          },
+                                        ),
+                                      ),
+                                      ListTile(
+                                              //leading: Icon(Icons.photo_album),
+                                              title: FlatButton(
+                                          child: Text('Youtube', style: TextStyle(
+                                            decoration: TextDecoration.underline,
+                                            color: Colors.white
+                                          ),),
+                                          onPressed: () {
+                                            js.context.callMethod('open', ['https://www.youtube.com/channel/UCYl4NKZJjuC4CqqiGoj9xqA']);
+                                          },
+                                        ),
+                                      ),
+
+                                    ],
+)
+                                    /*child: Stack(
+                                  //alignment: MainAxisAlignment.start,
                                   children: [
-                                    FlatButton(
-                                    child: Text('Linkedin', style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                    ),),
-                                    onPressed: () {
-                                      js.context.callMethod('open', ['https://www.linkedin.com/in/shannon-setter-63a964a1/']);
-                                    },
-                                  ),
-                                    FlatButton(
+                                   FlatButton(
                                       textColor: const Color(0xFF6200EE),
                                       onPressed: () {
                                         // Perform some action
@@ -219,31 +307,40 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
                                     },
                                   ),
                                   ],
+                                )*/,),
                                 ),
 
-                                ListTile(
-                                  //leading: Icon(Icons.arrow_drop_down_circle),
-                                  title: const Text('Where to begin', style: TextStyle(
-                                    fontSize: 20,
-                                    decoration: TextDecoration.underline,
-                                        color: Colors.white),
-                                  ),
-                                  subtitle: Padding(
-                                    padding: EdgeInsets.all(5.0),
-                                    child:Text(
-                                    "Developing with a range of technologies, which have been fun every step of learning and experiencing the in's and out's of the what I can do through to what the client needs.",
-                                    style: TextStyle(
-                                        color: Colors.white),
-                                  ),),
-                                ),
+                               
                                 
                                 //Image.asset("assets/imgs/me.jpg",fit: BoxFit.fill,),
                                 //Image.asset('assets/card-sample-image-2.jpg'),
-                              ],
-                            ),
-                            ),
 
-                            Padding(
+                            
+                            
+                            // ),
+                          ]),
+
+                          SliverToBoxAdapter(
+                            child: Container(
+                              //color: Colors.yellow,
+                              child: Padding(
+                                padding: EdgeInsets.all(20.0),
+                                child: Text(
+                                    "Technologies",
+                                    style: TextStyle(
+                                        color: Colors.white),
+                                  )
+                              )
+                            )
+                          ),
+                          //SliverGrid.count(
+                          // crossAxisCount: 1,
+                          SliverGrid.extent(
+                            maxCrossAxisExtent: 550,
+                            children: [
+                            
+
+                              Padding(
                                     padding: EdgeInsets.all(20.0),
                             child: ListTile(
                                   //leading: Icon(Icons.arrow_drop_down_circle),
@@ -315,15 +412,6 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
                                         color: Colors.white),
                                   ),),
                                 )),
-                            
-                            // ),
-                          ]),
-
-                          //SliverGrid.count(
-                          // crossAxisCount: 1,
-                          SliverGrid.extent(
-                            maxCrossAxisExtent: 400,
-                            children: [
                               /*for (int i = 0; i < 30; i++)
                                 new Padding(
                                     padding: EdgeInsets.all(5.0),
@@ -398,3 +486,4 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
     );
   }
 }
+
