@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 //import 'package:flutter_linkify/flutter_linkify.dart';
 //import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'dart:js' as js;
 import 'helpers.dart';
+import 'tab1.dart';
 
 void main() {
   runApp(MyApp());
 }
+
+var all_shadow = BoxShadow(
+  color: Colors.black.withOpacity(0.3),
+  spreadRadius: 5,
+  blurRadius: 7,
+  offset: Offset(0, 3), // changes position of shadow
+);
 
 class MyApp extends StatelessWidget {
   @override
@@ -16,28 +25,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Avatar(),
+      home: HomePage(),
     );
   }
 }
 
-class Avatar extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _Avatar();
+  State<StatefulWidget> createState() => _HomePage();
 }
 
-class _Avatar extends State<Avatar> with TickerProviderStateMixin {
-
-  
+class _HomePage extends State<HomePage> with TickerProviderStateMixin {
   AnimationController _controller;
   Tween<double> _tween = Tween(begin: 1.25, end: 2);
-
-  var all_shadow = BoxShadow(
-    color: Colors.grey.withOpacity(0.5),
-    spreadRadius: 5,
-    blurRadius: 7,
-    offset: Offset(0, 3), // changes position of shadow
-  );
 
   @override
   void initState() {
@@ -54,16 +54,139 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    final _screenSize = MediaQuery.of(context).size;
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        /*appBar: AppBar(
+        title: Center(
+          child: Container(
+                              //width: MediaQuery.of(context).size.width,
+                              //height: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                /*image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  
+                                  image: new AssetImage("assets/imgs/me.jpg"),
+                                ),*/
+                              ),
+                              child: Image.asset('assets/imgs/me.jpg',width: 20,
+                                        height: 100,fit: BoxFit.contain,),
+                            ),
+        ),
+        backgroundColor: HexColor("002D3F"),
+      ),*/
+        body: SingleChildScrollView(
+
+
+          child: Container(
+          //height: _screenSize.height - (_screenSize.height /50),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          color: HexColor("005274"),
+          child: DefaultTabController(
+        length: 2,
+                  child: Scaffold(
+                    appBar: AppBar(
+                        automaticallyImplyLeading:
+                            false, // hides leading widget
+                        flexibleSpace: Container(
+                            //alignment: Alignment.center,
+                            //color: Colors.red,
+                            width: MediaQuery.of(context).size.width,
+                            height: 300.0,
+                            decoration: new BoxDecoration(
+                              //shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                //fit: BoxFit.fill,
+                                fit: BoxFit.cover,
+                                image: new AssetImage("assets/imgs/banner.jpg"),
+                              ),
+                              boxShadow: [all_shadow],
+                            )),
+                        bottom: TabBar(
+                          tabs: [
+                            Tab(
+                              icon: Icon(Icons.home),
+                              text: "Home",
+                            ),
+                            Tab(icon: Icon(Icons.computer)
+                              ,text: "Projects",
+                            ),
+                          ],
+                        ),
+                        title: Center(
+                          child: Text(
+                            'Shannon Setter portfolio',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        backgroundColor: HexColor("002D3F"),
+                      ),
+                    body: TabBarView(
+                      children: [
+                       Example07(),
+                        //Icon(Icons.directions_transit),
+                        Icon(Icons.computer),
+                      ],
+                    ),
+                  ),
+                ),
+        ),
+        )
+        
+        
+        );
+  }
+}
+//--useless code from here on lol was used with the sliver but its to ridgid
+class Avatar extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _Avatar();
+}
+
+class _Avatar extends State<Avatar> with TickerProviderStateMixin {
+  AnimationController _controller;
+  Tween<double> _tween = Tween(begin: 1.25, end: 2);
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+        duration: const Duration(milliseconds: 5000), vsync: this);
+    _controller.repeat(reverse: true);
+  }
+
+  @override
+  dispose() {
+    _controller.dispose(); // you need this
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-
     final _screenSize = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       /*appBar: AppBar(
         title: Center(
-          child: Text(""),
+          child: Container(
+                              //width: MediaQuery.of(context).size.width,
+                              //height: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                /*image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  
+                                  image: new AssetImage("assets/imgs/me.jpg"),
+                                ),*/
+                              ),
+                              child: Image.asset('assets/imgs/me.jpg',width: 20,
+                                        height: 100,fit: BoxFit.contain,),
+                            ),
         ),
         backgroundColor: HexColor("002D3F"),
       ),*/
@@ -110,7 +233,10 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
                           ],
                         ),
                         title: Center(
-                          child: Text('Shannon Setter portfolio'),
+                          child: Text(
+                            'Shannon Setter portfolio',
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                         backgroundColor: HexColor("002D3F"),
                       )),
@@ -121,14 +247,34 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
                         height: MediaQuery.of(context).size.height,
                         color: HexColor("005274"),
                         child: CustomScrollView(
-                        slivers: <Widget>[
-                          SliverGrid.extent(
-                            
-                            maxCrossAxisExtent: 500, 
-                            //SliverGrid.count(
-                             // crossAxisCount: 2,
-                            children: [
-                            /*Padding(
+                          slivers: <Widget>[
+                            SliverToBoxAdapter(
+                                child: Container(
+                                    //color: Colors.yellow,
+                                    child: Padding(
+                              padding: EdgeInsets.all(20.0),
+                              child: Center(
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 200,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      fit: BoxFit.fitHeight,
+                                      image:
+                                          new AssetImage("assets/imgs/me.jpg"),
+                                    ),
+                                  ),
+                                  /*child: Image.asset('assets/imgs/me.jpg',width: 100,
+                                        height: 100,),*/
+                                ),
+                              ),
+                            ))),
+                            SliverGrid.extent(maxCrossAxisExtent: 500,
+                                //SliverGrid.count(
+                                // crossAxisCount: 2,
+                                children: [
+                                  /*Padding(
                                 padding: EdgeInsets.all(10.0),
                                 child: Card(
                                         child: Column(
@@ -159,24 +305,27 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
                                         ),
                                       ),
                               )*/
-                            Padding(
+                                  /*Padding(
                               //padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                               padding: EdgeInsets.all(15.0),
                               child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              //height: 200,
+                              //width: MediaQuery.of(context).size.width,
+                              height: 50,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                image: DecorationImage(
+                                /*image: DecorationImage(
                                   fit: BoxFit.fill,
+                                  
                                   image: new AssetImage("assets/imgs/me.jpg"),
-                                ),
+                                ),*/
                               ),
-                            ),),
-                            //Card(
-                            //clipBehavior: Clip.antiAlias,
+                              child: Image.asset('assets/imgs/me.jpg',width: 20,
+                                        height: 50,fit: BoxFit.contain,),
+                            ),),*/
+                                  //Card(
+                                  //clipBehavior: Clip.antiAlias,
 
-                            /*Padding(
+                                  /*Padding(
                               padding: EdgeInsets.fromLTRB(0, 20, 0, 10),
                               child: Stack(
                                 fit: StackFit.expand,
@@ -185,100 +334,138 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
                               ],
                             ),
                             ),*/
+                                  Padding(
+                                      padding: EdgeInsets.all(1.0),
+                                      child: Container(
+                                          child: ListTile(
+                                            //leading: Icon(Icons.arrow_drop_down_circle),
+                                            title: Padding(
+                                                padding: EdgeInsets.all(15.0),
+                                                child: Text(
+                                                  'Welcome',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      color: Colors.white),
+                                                )),
+                                            subtitle: Padding(
+                                                padding: EdgeInsets.all(15.0),
+                                                child: Text(
+                                                  "Here we will explore the projects I've developed and the multiple different technologies that were used which are accessible via github and showcased here on pressback.space",
+                                                  //textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                )),
+                                          ),
+                                          decoration: new BoxDecoration(
+                                            boxShadow: [all_shadow],
+                                          ))),
 
-                             ListTile(
-                                  //leading: Icon(Icons.arrow_drop_down_circle),
-                                  title: Padding( padding: EdgeInsets.all(15.0),child: Text('Welcome', style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                        color: Colors.white),
-                                  )),
-                                  subtitle: Padding(
-                                    padding: EdgeInsets.all(15.0),child: Text(
-                                     "Here we will explore the projects I've developed and the multiple different technologies that were used which are accessible via github and showcased here on pressback.space",
-                                    style: TextStyle(
-                                        color: Colors.white),
-                                  )),
-                                ),
-                                /*Text(
+                                  /*Text(
                                     "Here we will explore the projects I've developed and the multiple different technologies that were used which are accessible via github and showcased here on pressback.space",
                                     style: TextStyle(
                                         color: Colors.white),
                                   ),*/
-                                
 
-                                ListTile(
-                                  //leading: Icon(Icons.arrow_drop_down_circle),
-                                  title: Padding( padding: EdgeInsets.all(15.0),child:Text('Where to begin', style: TextStyle(
-                                    fontSize: 20,
-                                    decoration: TextDecoration.underline,
-                                        color: Colors.white),
-                                  )),
-                                  subtitle: Padding(
-                                    padding: EdgeInsets.all(15.0),
-                                    child:Text(
-                                    "Developing with a range of technologies, which have been fun every step of learning and experiencing the in's and out's of the what I can do through to what the client needs.",
-                                    style: TextStyle(
-                                        color: Colors.white),
-                                  ),),
-                                ),
+                                  ListTile(
+                                    //leading: Icon(Icons.arrow_drop_down_circle),
+                                    title: Padding(
+                                        padding: EdgeInsets.all(15.0),
+                                        child: Text(
+                                          'Where to begin',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              color: Colors.white),
+                                        )),
+                                    subtitle: Padding(
+                                      padding: EdgeInsets.all(15.0),
+                                      child: Text(
+                                        "Developing with a range of technologies, which have been fun every step of learning and experiencing the in's and out's of the what I can do through to what the client needs.",
+                                        //textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
 
-
-                                ListTile(
-                                  //leading: Icon(Icons.arrow_drop_down_circle),
-                                  title: Padding( padding: EdgeInsets.all(15.0),child:Text('Quick links', style: TextStyle(
-                                    fontSize: 20,
-                                    decoration: TextDecoration.underline,
-                                        color: Colors.white),
-                                  )),
-                                  subtitle: Padding(
-                                    padding: EdgeInsets.all(15.0),
-
-                                    child: ListView(
-                                    children: <Widget>[
-                                      /*ListTile(
+                                  ListTile(
+                                    //leading: Icon(Icons.arrow_drop_down_circle),
+                                    title: Padding(
+                                        padding: EdgeInsets.all(15.0),
+                                        child: Text(
+                                          'Quick links',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              color: Colors.white),
+                                        )),
+                                    subtitle: Padding(
+                                      padding: EdgeInsets.all(15.0),
+                                      child: ListView(
+                                        children: <Widget>[
+                                          /*ListTile(
                                         leading: Icon(Icons.map),
                                         title: Text('Map'),
                                       ),*/
-                                      ListTile(
-                                              //leading: Icon(Icons.photo_album),
-                                              title: FlatButton(
-                                          child: Text('Linkedin', style: TextStyle(
-                                            decoration: TextDecoration.underline,
-                                            color: Colors.white
-                                          ),),
-                                          onPressed: () {
-                                            js.context.callMethod('open', ['https://www.linkedin.com/in/shannon-setter-63a964a1/']);
-                                          },
-                                        ),
-                                      ),
-                                      ListTile(
-                                              //leading: Icon(Icons.photo_album),
-                                              title: FlatButton(
-                                          child: Text('github', style: TextStyle(
-                                            decoration: TextDecoration.underline,
-                                            color: Colors.white
-                                          ),),
-                                          onPressed: () {
-                                            js.context.callMethod('open', ['https://github.com/planetbridging']);
-                                          },
-                                        ),
-                                      ),
-                                      ListTile(
-                                              //leading: Icon(Icons.photo_album),
-                                              title: FlatButton(
-                                          child: Text('Youtube', style: TextStyle(
-                                            decoration: TextDecoration.underline,
-                                            color: Colors.white
-                                          ),),
-                                          onPressed: () {
-                                            js.context.callMethod('open', ['https://www.youtube.com/channel/UCYl4NKZJjuC4CqqiGoj9xqA']);
-                                          },
-                                        ),
-                                      ),
-
-                                    ],
-)
-                                    /*child: Stack(
+                                          ListTile(
+                                            //leading: Icon(Icons.photo_album),
+                                            title: FlatButton(
+                                              child: Text(
+                                                'Linkedin',
+                                                style: TextStyle(
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    color: Colors.white),
+                                              ),
+                                              onPressed: () {
+                                                js.context.callMethod('open', [
+                                                  'https://www.linkedin.com/in/shannon-setter-63a964a1/'
+                                                ]);
+                                              },
+                                            ),
+                                          ),
+                                          ListTile(
+                                            //leading: Icon(Icons.photo_album),
+                                            title: FlatButton(
+                                              child: Text(
+                                                'github',
+                                                style: TextStyle(
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    color: Colors.white),
+                                              ),
+                                              onPressed: () {
+                                                js.context.callMethod('open', [
+                                                  'https://github.com/planetbridging'
+                                                ]);
+                                              },
+                                            ),
+                                          ),
+                                          ListTile(
+                                            //leading: Icon(Icons.photo_album),
+                                            title: FlatButton(
+                                              child: Text(
+                                                'Youtube',
+                                                style: TextStyle(
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    color: Colors.white),
+                                              ),
+                                              onPressed: () {
+                                                js.context.callMethod('open', [
+                                                  'https://www.youtube.com/channel/UCYl4NKZJjuC4CqqiGoj9xqA'
+                                                ]);
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                      /*child: Stack(
                                   //alignment: MainAxisAlignment.start,
                                   children: [
                                    FlatButton(
@@ -307,112 +494,129 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
                                     },
                                   ),
                                   ],
-                                )*/,),
-                                ),
-
-                               
-                                
-                                //Image.asset("assets/imgs/me.jpg",fit: BoxFit.fill,),
-                                //Image.asset('assets/card-sample-image-2.jpg'),
-
-                            
-                            
-                            // ),
-                          ]),
-
-                          SliverToBoxAdapter(
-                            child: Container(
-                              //color: Colors.yellow,
-                              child: Padding(
-                                padding: EdgeInsets.all(20.0),
-                                child: Text(
-                                    "Technologies",
-                                    style: TextStyle(
-                                        color: Colors.white),
-                                  )
-                              )
-                            )
-                          ),
-                          //SliverGrid.count(
-                          // crossAxisCount: 1,
-                          SliverGrid.extent(
-                            maxCrossAxisExtent: 550,
-                            children: [
-                            
-
-                              Padding(
-                                    padding: EdgeInsets.all(20.0),
-                            child: ListTile(
-                                  //leading: Icon(Icons.arrow_drop_down_circle),
-                                  title: const Text('Cyber security', style: TextStyle(
-                                    fontSize: 20,
-                                    decoration: TextDecoration.underline,
-                                        color: Colors.white),
+                                )*/
+                                      ,
+                                    ),
                                   ),
-                                  subtitle: Padding(
-                                    padding: EdgeInsets.all(5.0),
-                                    child:Text(
-                                    "Through experiencing the OSCP training, multiple Udemy courses and personal projects I've used tools with penetration testing and developed some of my own. Using and exploring and some case designing operating systems such as Kali linux, parrot os, blackarch, ubuntu and derivatives and flavors, windows xp through to 10, windows server deployment. At home I've even tried some open source firewalls like pfsense and untangled which I have to say was amazing to use and deploy.",
-                                    style: TextStyle(
-                                        color: Colors.white),
-                                  ),),
-                                )),
 
+                                  //Image.asset("assets/imgs/me.jpg",fit: BoxFit.fill,),
+                                  //Image.asset('assets/card-sample-image-2.jpg'),
+
+                                  // ),
+                                ]),
+
+                            SliverToBoxAdapter(
+                                child: Container(
+                                    //color: Colors.yellow,
+                                    child: Padding(
+                                        padding: EdgeInsets.all(20.0),
+                                        child: Text(
+                                          "Technologies",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(color: Colors.white),
+                                        )))),
+                            //SliverGrid.count(
+                            // crossAxisCount: 1,
+                            SliverGrid.extent(
+                              maxCrossAxisExtent: 550,
+                              children: [
                                 Padding(
                                     padding: EdgeInsets.all(20.0),
-                            child: ListTile(
-                                  //leading: Icon(Icons.arrow_drop_down_circle),
-                                  title: const Text('Web development', style: TextStyle(
-                                    fontSize: 20,
-                                    decoration: TextDecoration.underline,
-                                        color: Colors.white),
-                                  ),
-                                  subtitle: Padding(
-                                    padding: EdgeInsets.all(5.0),
-                                    child:Text(
-                                    "Learning and developed web development since 2006 I've been exposed to XAMP, WAMP, phpmyadmin for local web development and testing. Upon completing a project I've hosted on various platforms such as godaddy, crazy domains, linode, various free platforms and even did port forward through my home router.",
-                                    style: TextStyle(
-                                        color: Colors.white),
-                                  ),),
-                                )),
-
+                                    child: ListTile(
+                                      //leading: Icon(Icons.arrow_drop_down_circle),
+                                      title: const Text(
+                                        'Cyber security',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            decoration:
+                                                TextDecoration.underline,
+                                            color: Colors.white),
+                                      ),
+                                      subtitle: Padding(
+                                        padding: EdgeInsets.all(5.0),
+                                        child: Text(
+                                          "Through experiencing the OSCP training, multiple Udemy courses and personal projects I've used tools with penetration testing and developed some of my own. Using and exploring and some case designing operating systems such as Kali linux, parrot os, blackarch, ubuntu and derivatives and flavors, windows xp through to 10, windows server deployment. At home I've even tried some open source firewalls like pfsense and untangled which I have to say was amazing to use and deploy.",
+                                          //textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              //fontSize: 13,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    )),
                                 Padding(
                                     padding: EdgeInsets.all(20.0),
-                            child: ListTile(
-                                  //leading: Icon(Icons.arrow_drop_down_circle),
-                                  title: const Text('Software development', style: TextStyle(
-                                    fontSize: 20,
-                                    decoration: TextDecoration.underline,
-                                        color: Colors.white),
-                                  ),
-                                  subtitle: Padding(
-                                    padding: EdgeInsets.all(5.0),
-                                    child:Text(
-                                    "Programming is really fun to me and specially learning the strengths and weaknesses of different language's. While learning multiple IDE's and frameworks it's fun going from a blank canvas to a large multi platform software. I have used android studio, netbeans, eclipse, visual studio, visual studio code and the server edition, flash with actionscript when it was popular and even the Microsoft office products with VBA to automate my tasks with excel.",
-                                    style: TextStyle(
-                                        color: Colors.white),
-                                  ),),
-                                )),
-
-
+                                    child: ListTile(
+                                      //leading: Icon(Icons.arrow_drop_down_circle),
+                                      title: const Text(
+                                        'Web development',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            decoration:
+                                                TextDecoration.underline,
+                                            color: Colors.white),
+                                      ),
+                                      subtitle: Padding(
+                                        padding: EdgeInsets.all(5.0),
+                                        child: Text(
+                                          "Learning and developed web development since 2006 I've been exposed to XAMP, WAMP, phpmyadmin for local web development and testing. Upon completing a project I've hosted on various platforms such as godaddy, crazy domains, linode, various free platforms and even did port forward through my home router.",
+                                          //textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              //fontSize: 12,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    )),
                                 Padding(
                                     padding: EdgeInsets.all(20.0),
-                            child: ListTile(
-                                  //leading: Icon(Icons.arrow_drop_down_circle),
-                                  title: const Text('Multimedia', style: TextStyle(
-                                    fontSize: 20,
-                                    decoration: TextDecoration.underline,
-                                        color: Colors.white),
-                                  ),
-                                  subtitle: Padding(
-                                    padding: EdgeInsets.all(5.0),
-                                    child:Text(
-                                    "Using most of the programs in the adobe master collection such as photoshop, illustrator, premiere pro and even after effects. Even the corel paint/draw suite to help produce content for the client and the printer for advertising purposes.",
-                                    style: TextStyle(
-                                        color: Colors.white),
-                                  ),),
-                                )),
-                              /*for (int i = 0; i < 30; i++)
+                                    child: ListTile(
+                                      //leading: Icon(Icons.arrow_drop_down_circle),
+                                      title: const Text(
+                                        'Software development',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            decoration:
+                                                TextDecoration.underline,
+                                            color: Colors.white),
+                                      ),
+                                      subtitle: Padding(
+                                        padding: EdgeInsets.all(5.0),
+                                        child: Text(
+                                          "Programming is really fun to me and specially learning the strengths and weaknesses of different language's. While learning multiple IDE's and frameworks it's fun going from a blank canvas to a large multi platform software. I have used android studio, netbeans, eclipse, visual studio, visual studio code and the server edition, flash with actionscript when it was popular and even the Microsoft office products with VBA to automate my tasks with excel.",
+                                          //textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              //fontSize: 12,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    )),
+                                Padding(
+                                    padding: EdgeInsets.all(20.0),
+                                    child: ListTile(
+                                      //leading: Icon(Icons.arrow_drop_down_circle),
+                                      title: const Text(
+                                        'Multimedia',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            decoration:
+                                                TextDecoration.underline,
+                                            color: Colors.white),
+                                      ),
+                                      subtitle: Padding(
+                                        padding: EdgeInsets.all(5.0),
+                                        child: Text(
+                                          "Using most of the programs in the adobe master collection such as photoshop, illustrator, premiere pro and even after effects. Even the corel paint/draw suite to help produce content for the client and the printer for advertising purposes.",
+                                          //textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              //fontSize: 12,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    )),
+                                /*for (int i = 0; i < 30; i++)
                                 new Padding(
                                     padding: EdgeInsets.all(5.0),
                                     child: SizedBox(
@@ -431,13 +635,11 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
                                               "cha" + i.toString(),
                                               //style: TextStyle(fontSize: 50),
                                             )))),*/
-                                            
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                      ),
-                      
                       Icon(Icons.directions_transit),
                       Icon(Icons.directions_bike),
                     ],
@@ -447,7 +649,7 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
 
               /**/
               )),
-              
+
       /*drawer: Drawer(
         child: Container(
           color: HexColor("005274"),
@@ -486,4 +688,3 @@ class _Avatar extends State<Avatar> with TickerProviderStateMixin {
     );
   }
 }
-
